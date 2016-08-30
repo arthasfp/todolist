@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html ng-app="myapp" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Ваш список дел</title>
+    <script src="https://code.angularjs.org/1.3.9/angular.js"></script>
+    <script src="https://code.angularjs.org/1.3.9/angular-resource.js"></script>
+    <script src="todoApp.js"></script>
+    <link href="css/bootstrap.css" rel="stylesheet"/>
+</head>
+
+<body ng-controller="TodosController">
+
+<div class="container">
+    <div class="col-md-12" style="color: #337ab7; text-align: center; font-size: 42px; font-family: Arial"><label style="align-content: center">Ваш список дел</label> </div>
+    &#160;
+    <form role='login'>
+        <div class='form-inline'>
+            <div class="col-md-12">
+            <input class="form-control" ng-model='login' type='text' placeholder="Укажите пользователя">
+            <button class="btn btn-primary" ng-click="update()">Показать список дел</button>
+            <select class="form-control" ng-init="word = 'all'" name="mySelector" ng-model="word">
+                <option value="all">Все</option>
+                <option selected value="done">Сделанные</option>
+                <option value="act">В работе</option>
+            </select>
+         </div>
+        </div>
+    </form>
+    &#160;
+    <form role='form'>
+        <div class='form-group'>
+            <div class="col-md-8">
+                <input class='form-control' ng-model='text' type='text' placeholder="Укажите запланированное действие">
+            </div>
+        </div>
+        <br/><br/>
+        <div class="col-md-4">
+            <button class="btn btn-primary" ng-click="add()">Добавить к списку дел</button>
+        </div>
+    </form>
+    &#160;
+    <br/><br/><br/><br/><br/><br/><br/><br/>
+    <div class="container">
+        <div class="alert-danger" align="center" ng-hide='todos.length'>Нет списка дел у этого пользователя</div>
+        <table class="table table-responsive">
+            <tbody ng-repeat='todo in todos | filter:word'>
+            <tr ng-if='todo != activeTodo' ng-class="todo.closed ? 'success' : 'active'">
+                <td class="col-md-1">
+                    <span class="label label-success" ng-if='todo.closed'>Сделанные</span>
+                    <span class="label label-info" ng-if='!todo.closed'>В работе</span>
+                    <span></span>
+                </td>
+                <td class="col-md-7">{{ todo.text }}</td>
+                <td class="col-md-4">
+                    <a class='btn btn-success' href='' ng-click='switch(todo)'> Переключить </a>
+                    <a class='btn btn-primary' href='' ng-click='edit(todo)'> Редактировать </a>
+                    <a class='btn btn-danger' href='' ng-click='delete(todo)'> Удалить </a>
+                </td>
+            </tr>
+            <tr ng-if='todo == activeTodo'>
+                <td>
+                    <span class="label label-success" ng-if='todo.closed'>Сделанные</span>
+                    <span class="label label-info" ng-if='!todo.closed'>В работе</span>
+                    <span></span>
+                </td>
+                <td><input class="form-control" ng-model='todo.text' type="text"></td>
+                <td><a class='btn btn-primary' href='' ng-click='confirm(todo)'> Сохранить </a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
